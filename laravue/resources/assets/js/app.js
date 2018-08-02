@@ -11,7 +11,9 @@ window.Vue = require('vue');
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import VueSweetalert2 from 'vue-sweetalert2';
+ 
+Vue.use(VueSweetalert2);
 Vue.use(VueRouter)
 // const Foo = { template: '<div>Master</div>' }
 // const Bar = { template: '<div>Senpai</div>' }

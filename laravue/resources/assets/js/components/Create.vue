@@ -1,16 +1,17 @@
 <template>
 <div class="container">
-    <form v-on:submit="submitPost()">
+    <form v-on:submit.prevent="submitPost()">
         <div class="form-group">
-            <input type="text" name="title" placeholder="Title" class="form-control">
+            <input type="text" v-model="posts.title" placeholder="Title" class="form-control">
 
         </div>
         <div class="form-group">
-            <textarea type="text" name="desc" placeholder="Desc" class="form-control">
+            <textarea type="text" v-model="posts.desc" placeholder="Desc" class="form-control">
             </textarea>
         </div>
-            <button type="button" class="btn btn-primary">submit</button>
-
+        <div class="form-group">
+            <button class="btn btn-primary form-control">Create Post</button>
+        </div>
         <div class="form-group">
             <router-link to="/" class="btn btn-warning">
                 Cancel
@@ -20,7 +21,7 @@
     </div>
 </template>
 <script>
-new Vue( {
+export default {
 data: function() {
     return {
     posts: {
@@ -32,16 +33,24 @@ data: function() {
 },
     methods: {
     submitPost(){
-    axios.post(`/posts`, this.posts)
+    axios
+        .post(`/Framework/Laravel_Vue/laravue/public/posts`, this.posts)
         .then(response => {
-            console.log(response)
-        // JSON responses are automatically parsed.
+            // Use sweetalret2
+        this.$swal({
+            type: 'success',
+            title: 'Post Tersimpan'
+        });
         this.posts = response.data;
+        this.posts.title =this.posts.desc = '';
+        
         })
         .catch(e => {
         this.errors.push(e);
         });
         }
     }
-});
+    
+    
+};
 </script>
