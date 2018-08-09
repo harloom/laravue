@@ -22,6 +22,15 @@ class PostController extends Controller
     public function index()
     {
         //
+        $collection = Post::all();
+        $sortAsc = $collection->sortBy('title');
+        return $sortAsc;
+
+    }
+    public function dump(){
+        $collection = Post::all();
+        $sortAsc = $collection->sortBy('title');
+        return dd($sortAsc);
     }
 
     /**
@@ -54,7 +63,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        return Post::findOrFail($id);
     }
 
     /**

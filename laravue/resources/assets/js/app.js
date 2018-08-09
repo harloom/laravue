@@ -21,11 +21,14 @@ Vue.use(VueRouter)
 //import component
 import index from './components/Index.vue';
 import create from './components/Create.vue';
+import read from './components/Read.vue';
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
 const routes = [
     { path: '/', component: index },
-    { path: '/create', component: create }
+    { path: '/create', component: create },
+    { path: '/read/:id', component: read ,name:'readPost'}
 ]
 
 const router = new VueRouter({
@@ -34,6 +37,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     router
-}).$mount('#add')
+}).$mount('#app')
 
 

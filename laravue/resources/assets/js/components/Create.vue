@@ -32,22 +32,24 @@ data: function() {
     };
 },
     methods: {
-    submitPost(){
-    axios
+    async submitPost(){
+    await axios
         .post(`/Framework/Laravel_Vue/laravue/public/posts`, this.posts)
         .then(response => {
             // Use sweetalret2
-        this.$swal({
-            type: 'success',
-            title: 'Post Tersimpan'
-        });
         this.posts = response.data;
-        this.posts.title =this.posts.desc = '';
+        
         
         })
         .catch(e => {
         this.errors.push(e);
         });
+
+    await this.$swal({
+            type: 'success',
+            title: 'Post Tersimpan'
+        });
+    this.$router.push({path:'/'});
         }
     }
     

@@ -20,5 +20,5 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/', 'PostController@homepage')->name('R_homepage');
-
+Route::get('/cek', 'PostController@dump')->name('cek');
 Route::resource('/posts', 'PostController');
