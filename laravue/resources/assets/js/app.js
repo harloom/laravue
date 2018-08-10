@@ -22,13 +22,15 @@ Vue.use(VueRouter)
 import index from './components/Index.vue';
 import create from './components/Create.vue';
 import read from './components/Read.vue';
+import update from './components/Edit.vue';
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const routes = [
     { path: '/', component: index },
     { path: '/create', component: create },
-    { path: '/read/:id', component: read ,name:'readPost'}
+    { path: '/read/:id', component: read ,name:'readPost'},
+    { path: '/:id/edit', component: update ,name:'editPost'}
 ]
 
 const router = new VueRouter({

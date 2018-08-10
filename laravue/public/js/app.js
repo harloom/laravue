@@ -513,6 +513,13 @@ module.exports = function normalizeComponent (
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(51);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
@@ -612,13 +619,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(51);
-
 
 /***/ }),
 /* 5 */
@@ -24955,7 +24955,7 @@ module.exports = Vue;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(63);
+module.exports = __webpack_require__(66);
 
 
 /***/ }),
@@ -24974,6 +24974,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Create_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Read_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Read_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_Read_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Edit_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Edit_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -24999,9 +25001,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('example-component', __webpack_require__(60));
 
-var routes = [{ path: '/', component: __WEBPACK_IMPORTED_MODULE_3__components_Index_vue___default.a }, { path: '/create', component: __WEBPACK_IMPORTED_MODULE_4__components_Create_vue___default.a }, { path: '/read/:id', component: __WEBPACK_IMPORTED_MODULE_5__components_Read_vue___default.a, name: 'readPost' }];
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('example-component', __webpack_require__(63));
+
+var routes = [{ path: '/', component: __WEBPACK_IMPORTED_MODULE_3__components_Index_vue___default.a }, { path: '/create', component: __WEBPACK_IMPORTED_MODULE_4__components_Create_vue___default.a }, { path: '/read/:id', component: __WEBPACK_IMPORTED_MODULE_5__components_Read_vue___default.a, name: 'readPost' }, { path: '/:id/edit', component: __WEBPACK_IMPORTED_MODULE_6__components_Edit_vue___default.a, name: 'editPost' }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     routes: routes // short for `routes: routes`
@@ -46173,7 +46176,7 @@ module.exports = function(module) {
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(8);
 var Axios = __webpack_require__(23);
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -46256,7 +46259,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(32);
 var dispatchRequest = __webpack_require__(33);
@@ -46795,7 +46798,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(34);
 var isCancel = __webpack_require__(12);
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var isAbsoluteURL = __webpack_require__(35);
 var combineURLs = __webpack_require__(36);
 
@@ -54187,7 +54190,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
@@ -54195,6 +54198,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
 //
 //
 //
@@ -54267,8 +54272,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             currentSortDir: "asc",
             perPage: 5,
             page: 1,
-            componentLoaded: false
+            componentLoaded: false,
+            hello: "hello Ini Jalan Saat Mulai"
         };
+    },
+    created: function created() {
+        console.log(this.hello);
+        this.getPosts();
     },
 
 
@@ -54313,13 +54323,35 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             return getPosts;
         }(),
+        submitPostDelete: function submitPostDelete(id, index) {
+            var _this = this;
+
+            this.$swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+                    __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete("/Framework/Laravel_Vue/laravue/public/posts/" + id).then(function (response) {
+                        _this.posts.splice(index, 1);
+                    }).catch(function (e) {
+                        _this.errors.push(e);
+                    });
+                    _this.$swal('Deleted!', 'Your file has been deleted.', 'success');
+                }
+            });
+        },
         setPages: function setPages() {
             var numberOfpages = Math.ceil(this.posts.length / this.perPage);
-            console.dir(this.posts.length);
+            // console.dir(this.posts.length);
             this.pages.length = 0;
             for (var i = 1; i <= numberOfpages; i++) {
                 this.pages.push(i);
-                console.dir(this.pages);
+                // console.dir(this.pages);
             }
         },
         paginate: function paginate(posts) {
@@ -54341,26 +54373,21 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
     computed: {
         displayedPosts: function displayedPosts() {
-            var _this = this;
+            var _this2 = this;
 
             var sortPost = this.posts.sort(function (a, b) {
                 var modifier = 1;
-                if (_this.currentSortDir === 'desc') modifier = -1;
-                if (a[_this.currentSort] < b[_this.currentSort]) return -1 * modifier;
-                if (a[_this.currentSort] > b[_this.currentSort]) return 1 * modifier;
+                if (_this2.currentSortDir === 'desc') modifier = -1;
+                if (a[_this2.currentSort] < b[_this2.currentSort]) return -1 * modifier;
+                if (a[_this2.currentSort] > b[_this2.currentSort]) return 1 * modifier;
                 return 0;
             });
             return this.paginate(sortPost);
         }
     },
-    created: function created() {
-        this.getPosts();
-    },
-
 
     watch: {
         posts: function posts() {
-
             this.setPages();
         }
     }
@@ -55211,8 +55238,8 @@ var render = function() {
           _vm._v(" "),
           _c(
             "tbody",
-            _vm._l(_vm.displayedPosts, function(post) {
-              return _c("tr", { key: post.id }, [
+            _vm._l(_vm.displayedPosts, function(post, index) {
+              return _c("tr", { key: index }, [
                 _c("td", [_vm._v(_vm._s(post.title))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(post.desc))]),
@@ -55237,9 +55264,41 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(0, true),
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-warning",
+                        attrs: {
+                          to: { name: "editPost", params: { id: post.id } }
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "fa fa-pencil" }),
+                        _vm._v(" Edit\r\n                                ")
+                      ]
+                    )
+                  ],
+                  1
+                ),
                 _vm._v(" "),
-                _vm._m(1, true)
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.submitPostDelete(post.id, index)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-trash" }), _vm._v(" Delete")]
+                  )
+                ])
               ])
             })
           )
@@ -55269,9 +55328,7 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
-            pageNumber
-          ) {
+          _vm._l(_vm.pages, function(pageNumber) {
             return _c(
               "li",
               {
@@ -55295,7 +55352,7 @@ var render = function() {
               ]
             )
           }),
-          _vm.page < _vm.pages.length
+          _vm.page < this.pages.length
             ? _c(
                 "li",
                 {
@@ -55319,32 +55376,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-warning", attrs: { type: "button" } },
-        [_c("i", { staticClass: "fa fa-pencil" }), _vm._v(" Edit")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-danger ", attrs: { type: "button" } },
-        [_c("i", { staticClass: "fa fa-trash" }), _vm._v(" Delete")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -55407,7 +55439,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 
 
@@ -55651,7 +55683,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 
 
@@ -55691,7 +55723,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
           switch (_context.prev = _context.next) {
             case 0:
               id = this.$route.params.id;
-
 
               axios.get("/Framework/Laravel_Vue/laravue/public/posts/" + id).then(function (response) {
                 // JSON responses are automatically parsed.
@@ -55788,6 +55819,287 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources\\assets\\js\\components\\Edit.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-39804701", Component.options)
+  } else {
+    hotAPI.reload("data-v-39804701", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            posts: {
+                title: "",
+                desc: ""
+            },
+            errors: []
+        };
+    }, created: function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            var _this = this;
+
+            var id;
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            id = this.$route.params.id;
+
+                            axios.get("/Framework/Laravel_Vue/laravue/public/posts/" + id + '/edit').then(function (response) {
+                                // JSON responses are automatically parsed.
+                                _this.posts = response.data;
+                            }).catch(function (e) {
+                                _this.errors.push(e);
+                            });
+                            // async / await version (created() becomes async created())
+                            //
+
+                        case 2:
+                        case "end":
+                            return _context.stop();
+                    }
+                }
+            }, _callee, this);
+        }));
+
+        function created() {
+            return _ref.apply(this, arguments);
+        }
+
+        return created;
+    }(),
+
+    methods: {
+        submitPostEdit: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+                var _this2 = this;
+
+                var id;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                id = this.$route.params.id;
+                                _context2.next = 3;
+                                return axios.patch("/Framework/Laravel_Vue/laravue/public/posts/" + id, this.posts).then(function (response) {
+                                    // Use sweetalret2
+                                    console.log(response.data);
+                                    _this2.posts = response.data;
+                                }).catch(function (e) {
+                                    _this2.errors.push(e);
+                                });
+
+                            case 3:
+                                _context2.next = 5;
+                                return this.$swal({
+                                    type: 'success',
+                                    title: 'Post TerEdit'
+                                });
+
+                            case 5:
+                                this.$router.push({ path: '/' });
+
+                            case 6:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function submitPostEdit() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return submitPostEdit;
+        }()
+    }
+
+});
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            _vm.submitPostEdit()
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.posts.title,
+                expression: "posts.title"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Title" },
+            domProps: { value: _vm.posts.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.posts, "title", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.posts.desc,
+                expression: "posts.desc"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Desc" },
+            domProps: { value: _vm.posts.desc },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.posts, "desc", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "form-group" },
+          [
+            _c(
+              "router-link",
+              { staticClass: "btn btn-warning", attrs: { to: "/" } },
+              [_vm._v("\r\n                Cancel\r\n            ")]
+            )
+          ],
+          1
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("button", { staticClass: "btn btn-primary form-control" }, [
+        _vm._v("Edit Post")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-39804701", module.exports)
+  }
+}
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(64)
+/* template */
+var __vue_template__ = __webpack_require__(65)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources\\assets\\js\\components\\ExampleComponent.vue"
 
 /* hot reload */
@@ -55810,7 +56122,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55839,7 +56151,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55882,7 +56194,7 @@ if (false) {
 }
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

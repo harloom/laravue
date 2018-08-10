@@ -74,7 +74,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        return Post::findOrFail($id);
     }
 
     /**
@@ -87,6 +87,9 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $tmpPostId =  Post::findOrFail($id);
+        $tmpPostId->update($request->all());
+        return $tmpPostId;
     }
 
     /**
@@ -98,5 +101,8 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $delPost = Post::findOrFail($id);
+        $delPost->delete();
+        return $delPost;
     }
 }

@@ -23,7 +23,6 @@ export default {
   // Fetches posts when the component is created.
   async created() {
     let id = this.$route.params.id;
-
     axios
       .get(`/Framework/Laravel_Vue/laravue/public/posts/` + id)
       .then(response => {

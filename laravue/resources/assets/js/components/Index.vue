@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <tr v-for="post of displayedPosts" :key="post.id" >
+                <tr v-for="(post, index) of displayedPosts" :key="index" >
                         <td>{{post.title}}</td>
                         <td>{{post.desc}}</td>
                             <td>
@@ -27,10 +27,12 @@
                                 </router-link>
                                 </td>
                                 <td>
-                            <button type="button" class="btn btn-warning"><i class="fa fa-pencil"></i> Edit</button>
-                            </td>
+                                <router-link :to="{name:'editPost' ,params:{id:post.id}}" class="btn btn-warning">
+                                <i class="fa fa-pencil"></i> Edit
+                                </router-link>
+                                </td>
                             <td>
-                            <button type="button" class="btn btn-danger "><i class="fa fa-trash"></i> Delete</button>
+                            <button type="button" class="btn btn-danger" v-on:click="submitPostDelete(post.id, index)"><i class="fa fa-trash"></i> Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -43,11 +45,11 @@
                     <li v-if="page != 1" v-on:click="page--" class="page-item">
                     <span class="page-link">Previous</span>
                     </li>
-                    <li v-bind:class="{active: pageNumber == page }" class="page-item" v-for="pageNumber in pages.slice(page-1,page+5)" :key="pageNumber.id" @click="page = pageNumber">
+                    <li v-bind:class="{active: pageNumber == page }" class="page-item" v-for="pageNumber in pages" :key="pageNumber.id" @click="page = pageNumber">
                     <span class="page-link">
                         {{pageNumber}}
                     </span>
-                    <li  @click="page++" v-if="page < pages.length"  class="page-item ">
+                    <li  @click="page++" v-if="page < this.pages.length"  class="page-item ">
                     <a class="page-link" href="#" >Next</a>
                     </li>
                 </ul>
@@ -70,8 +72,15 @@ data() {
         currentSortDir: "asc",
         perPage:5,
         page:1,
-        componentLoaded: false
+        componentLoaded: false,
+        hello:"hello Ini Jalan Saat Mulai"
         };
+    },
+
+    created () {
+        console.log(this.hello)
+        this.getPosts();
+    
     },
 
 methods: {
@@ -85,14 +94,41 @@ methods: {
         this.errors.push(e)
         }
     },
+    
+    submitPostDelete(id , index){
+    this.$swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) =>{
+        if(result.value){
+                axios.delete(`/Framework/Laravel_Vue/laravue/public/posts/`+id)
+                .then(response => {
+                    this.posts.splice(index, 1);      
+                    }).catch(e => {
+                    this.errors.push(e);
+                });
+            this.$swal(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+            )
+        }
+    })    
+
+    },
 
     setPages(){
     let numberOfpages = Math.ceil(this.posts.length / this.perPage);
-    console.dir(this.posts.length);
+    // console.dir(this.posts.length);
     this.pages.length = 0;
     for (let i = 1 ; i <= numberOfpages;i++){
         this.pages.push(i);
-        console.dir(this.pages);
+        // console.dir(this.pages);
         }
     },
 
@@ -126,13 +162,9 @@ computed: {
             return this.paginate(sortPost)
         }
     },
-    created () {
-        this.getPosts();
-    },
 
     watch: {
-        posts(){
-            
+        posts(){           
             this.setPages();
             
         }
